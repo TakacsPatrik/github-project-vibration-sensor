@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Air monitoring project</title>
+  <meta name="description" content="Google Colab-szerű, cellákra bontott egyoldalas HTML sablon." />
+  <style>
+    :root{
+      --bg: #0b0f17;
+      --paper: #111827;
+      --paper-light: #1f2937;
+      --paper-lighter: #374151;
+      --text:#e5e7eb;
+      --muted:#94a3b8;
+      --border:#1f2937;
+      --accent:#60a5fa;
+      --radius:14px;
+      --shadow:0 6px 18px rgba(0,0,0,.35);
+      --mono: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+      --sans: ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Ubuntu,Cantarell,"Noto Sans","Helvetica Neue",Arial;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:var(--sans);background:var(--bg);color:var(--text)}
+
+    header{position:sticky;top:0;z-index:40;background:#111827cc;backdrop-filter:blur(8px);border-bottom:1px solid rgba(148,163,184,.2)}
+    .top{width:min(1100px,94vw);margin:0 auto;display:flex;align-items:center;gap:14px;padding:10px 0}
+    .dot{width:10px;height:10px;border-radius:999px;background:var(--accent)}
+    .title{font-weight:700;color:var(--text)}
+    .actions{margin-left:auto;display:flex;gap:10px}
+    .btn{border:1px solid rgba(148,163,184,.25);padding:8px 12px;border-radius:10px;background:var(--paper-light);color:var(--text);text-decoration:none}
+    .btn:hover{background:var(--paper-lighter)}
+
+    .container{width:min(1100px,94vw);margin:24px auto}
+    .notebook{display:grid;gap:18px}
+
+    .cell{
+      display:grid;grid-template-columns:92px 1fr;gap:0;
+      background:var(--paper);
+      border:1px solid rgba(148,163,184,.25);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden; /* biztosítja a mindkét oldali lekerekítést */
+    }
+    .gutter{
+      border-right:1px solid rgba(148,163,184,.15);
+      background:var(--paper-light);
+      padding:16px 12px;
+      display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between
+    }
+    .prompt{font-family:var(--mono);font-size:13px;color:var(--muted)}
+    .label{font-size:12px;color:var(--muted);border:1px solid rgba(148,163,184,.25);padding:4px 8px;border-radius:8px;background:var(--paper-lighter)}
+    .content{padding:20px}
+
+    .content h1{font-size:26px;margin:0 0 10px;color:var(--text)}
+    .content h2{font-size:22px;margin:22px 0 8px;color:var(--text)}
+    .content h3{font-size:18px;margin:18px 0 6px;color:var(--text)}
+    .content p{margin:0 0 10px;line-height:1.6;color:var(--text)}
+    .content ul{margin:0 0 10px 1.2rem}
+    .content code{font-family:var(--mono);background:var(--paper-light);border:1px solid rgba(148,163,184,.25);padding:.1rem .35rem;border-radius:6px;color:var(--accent)}
+
+    figure{margin:0}
+    .imgwrap{display:block;overflow:hidden;border-radius:12px;border:1px solid rgba(148,163,184,.25)}
+    .imgwrap img{display:block;width:100%;height:auto}
+    figcaption{margin-top:8px;color:var(--muted);font-size:14px}
+
+    @media (max-width:860px){ .cell{grid-template-columns:72px 1fr} }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="top">
+      <span class="dot" aria-hidden="true"></span>
+      <div class="title">Vibration Sensor Data Collection & Analysing</div>
+      <div class="actions">
+        <!-- <a class="btn" href="#top">Ugrás a tetejére</a> -->
+        <!-- <a class="btn" href="#beillesztesi-utmutato">Beillesztési útmutató</a> -->
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="notebook">
+      <a id="top"></a>
+
+      <!-- ======= SZÖVEGES és KÉP CELLÁK – a Word dokumentum sorrendjében töltsd ki ======= -->
+
+      <!-- CELL 1: CÍM/ABSZTRAKT (Word: első oldal) -->
+      <section class="cell">
+        <div class="gutter">
+          <div class="prompt">In [1]:</div>
+          <div class="label">Text</div>
+        </div>
+        <div class="content">
+          <h1 id="attekintes">Overview - Problem Statement</h1>
+          <p style="text-align: justify;"><em>The WITMOTION WT901C485 is a high-precision vibration sensor that collects data along 9 axes: it measures acceleration, angular velocity, and the magnetic field, and from these values it calculates tilt angles and heading. In addition, it measures temperature, records the chip’s internal timestamp, and during program execution it also associates the data with the current system time. The device communicates via the RS-485 (Modbus RTU) interface, which allows reliable integration into industrial or research systems and supports the simultaneous networking of multiple sensors.</em></p>
+		  <p style="text-align: justify;"><em>In this project, I mounted the WT901C485 vibration sensor on a CNC lathe in order to collect real-time data at a sampling frequency of 5 Hz (corresponding to a sampling interval of 0.2 seconds) about the machine’s operation. A threshold value was assigned to the vibration data, and whenever this threshold was exceeded, the program triggered an external warning light to flash. For data evaluation, I also developed a graphical user interface (GUI), which allows the measured values to be easily monitored and tracked over time.</em></p>
+        </div>
+      </section>
+
+      <!-- CELL 2: FOLYAMAT / MÓDSZER -->
+      <section class="cell">
+        <div class="gutter">
+          <div class="prompt">In [2]:</div>
+          <div class="label">Text</div>
+        </div>
+        <div class="content">
+          <h2 id="fejlesztes">Development process of the data gathering</h2>
+          <p style="text-align: justify;"><em>During the project, I first connected to the device via serial communication and configured its parameters. After that, I calculated a resultant value from the vibration data measured along the three axes, which I then collected together with the other values in a list. The gathered data is saved every 10,000 rows into a .csv file, each file tagged with a timestamp. If the machine’s vibration exceeds the set threshold, the program uses HID communication to connect to an external flasher, sending it a high value to activate it. Otherwise, every five seconds the flasher receives a low value.</em></p>
+        </div>
+      </section>
+
+      <!-- CELL 3: KÉP -->
+      <section class="cell">
+        <!-- <h2 id="validacio">Steps</h2> -->
+        <div class="gutter">
+          <div class="prompt">In [5]:</div>
+          <div class="label">Image</div>
+        </div>
+        <div class="content">
+          <figure>
+            <div class="imgwrap">
+              <img src="data_gathering.png" alt="Steps of the data gathering" />
+            </div>
+            <figcaption style="text-align: center;"><em>Steps of the data gathering</em></figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- CELL 4: KÉP -->
+      <section class="cell">
+        <div class="gutter">
+          <div class="prompt">In [6]:</div>
+          <div class="label">Image</div>
+        </div>
+        <div class="content">
+          <figure>
+            <div class="imgwrap">
+              <img src="data_structure.png" alt="Structure of the data" />
+            </div>
+            <figcaption style="text-align: center;"><em>Structure of the data</em></figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="cell">
+        <div class="gutter">
+          <div class="prompt">In [2]:</div>
+          <div class="label">Text</div>
+        </div>
+        <div class="content">
+          <h2 id="fejlesztes">Development process of the GUI</h2>
+          <p style="text-align: justify;"><em>The goal of the project was to create a simple interface that displays the measurement results on a graph within a user-defined time interval. In addition to specifying the start and end times, the user can also set a threshold value and choose whether to apply data smoothing. Smoothing is enabled by default and uses a 5-sample moving average (which corresponds to about 1 second of smoothing at a 5 Hz sampling rate). On the graph, the current threshold is shown as a green dashed line, while periods exceeding the threshold are highlighted with red 3-minute bands. In the case of large gaps between samples, the system inserts interruptions (NaN values) so that these breaks are also visible on the plot. There is also an option to export the graph.</em></p>
+        </div>
+      </section>
+
+      <!-- CELL 4: KÉP -->
+      <section class="cell">
+        <div class="gutter">
+          <div class="prompt">In [6]:</div>
+          <div class="label">Image</div>
+        </div>
+        <div class="content">
+          <figure>
+            <div class="imgwrap">
+              <img src="gui_structure.png" alt="GUI structure" />
+            </div>
+            <figcaption style="text-align: center;"><em>GUI structure</em></figcaption>
+          </figure>
+        </div>
+      </section>
+      
+    </div>
+  </main>
+</body>
+</html>
